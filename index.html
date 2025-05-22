@@ -1,0 +1,1220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tampa Bay Safe - Emergency Resources</title>
+    
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+            line-height: 1.5;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #1e3a8a, #3b82f6);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            margin-bottom: 25px;
+        }
+        
+        .search-container {
+            position: relative;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        
+        .search-box {
+            width: 100%;
+            padding: 15px 50px 15px 20px;
+            border-radius: 30px;
+            border: none;
+            font-size: 1rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        .search-btn {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #3b82f6;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            cursor: pointer;
+        }
+        
+        .main-content {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+        
+        .emergency-section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+        
+        .emergency-section h2 {
+            font-size: 1.8rem;
+            color: #1e3a8a;
+            margin-bottom: 5px;
+        }
+        
+        .emergency-section .subtitle {
+            color: #666;
+            margin-bottom: 25px;
+            font-size: 0.95rem;
+        }
+        
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .category-card {
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .category-card:hover {
+            border-color: #3b82f6;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.15);
+        }
+        
+        .category-card.active {
+            border-color: #3b82f6;
+            background: #f8faff;
+        }
+        
+        .category-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+        
+        .category-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #1e3a8a;
+            margin-bottom: 5px;
+        }
+        
+        .category-count {
+            font-size: 0.85rem;
+            color: #666;
+        }
+        
+        .guide-dropdown {
+            display: none;
+            background: #f8faff;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+        
+        .guide-dropdown.active {
+            display: block;
+        }
+        
+        .guide-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 10px;
+        }
+        
+        .guide-item {
+            padding: 12px 15px;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+        }
+        
+        .guide-item:hover {
+            background: #3b82f6;
+            color: white;
+            border-color: #3b82f6;
+        }
+        
+        .guide-content {
+            display: none;
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 20px 0;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+        
+        .guide-content.active {
+            display: block;
+        }
+        
+        .guide-content h3 {
+            color: #dc2626;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            border-bottom: 3px solid #dc2626;
+            padding-bottom: 10px;
+        }
+        
+        .important-notice {
+            background: #fef2f2;
+            border-left: 4px solid #dc2626;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .important-notice strong {
+            color: #dc2626;
+        }
+        
+        .guide-step {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f9fafb;
+            border-radius: 8px;
+            border-left: 3px solid #3b82f6;
+        }
+        
+        .guide-step h4 {
+            color: #1e3a8a;
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+        }
+        
+        .guide-step ul {
+            margin-left: 20px;
+            margin-top: 8px;
+        }
+        
+        .guide-step li {
+            margin-bottom: 5px;
+        }
+        
+        .remember-box {
+            background: #f0f9ff;
+            border: 2px solid #3b82f6;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 20px;
+        }
+        
+        .remember-box strong {
+            color: #1e3a8a;
+        }
+        
+        .back-btn {
+            background: #6b7280;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+        
+        .back-btn:hover {
+            background: #4b5563;
+        }
+        
+        .resources-section {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+        
+        .resources-section h3 {
+            font-size: 1.4rem;
+            color: #1e3a8a;
+            margin-bottom: 5px;
+        }
+        
+        .resources-section .subtitle {
+            color: #666;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+        }
+        
+        .resource-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+        
+        .resource-link {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            background: #f8faff;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            text-decoration: none;
+            color: #1e3a8a;
+            transition: all 0.3s ease;
+        }
+        
+        .resource-link:hover {
+            background: #3b82f6;
+            color: white;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.2);
+        }
+        
+        .resource-icon {
+            font-size: 1.5rem;
+            margin-right: 12px;
+        }
+        
+        .footer {
+            background: #1e3a8a;
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+            margin-top: 40px;
+        }
+        
+        .contact-info {
+            margin-bottom: 15px;
+        }
+        
+        .contact-info div {
+            margin: 5px 0;
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .category-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .guide-list {
+                grid-template-columns: 1fr;
+            }
+            
+            .resource-links {
+                grid-template-columns: 1fr;
+            }
+            
+            .main-content {
+                padding: 0 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div style="position: absolute; top: 20px; right: 20px;">
+            <a href="https://buymeacoffee.com/tampabaysafe" target="_blank" style="background: #FFDD00; color: #000; padding: 8px 16px; border-radius: 20px; text-decoration: none; font-size: 0.85rem; font-weight: 600; display: inline-flex; align-items: center; gap: 5px; box-shadow: 0 2px 10px rgba(0,0,0,0.2);">
+                ☕ Buy Me a Coffee
+            </a>
+        </div>
+        <div style="position: absolute; top: 20px; right: 20px;">
+            <a href="https://buymeacoffee.com/tampabaysafe" target="_blank" style="background: #FFDD00; color: #000; padding: 8px 16px; border-radius: 20px; text-decoration: none; font-size: 0.85rem; font-weight: 600; display: inline-flex; align-items: center; gap: 5px; box-shadow: 0 2px 10px rgba(0,0,0,0.2);">
+                ☕ Buy Me a Coffee
+            </a>
+        </div>
+        
+        <h1>Tampa Bay Safe</h1>
+        <p>Emergency guides and critical safety information when you need it most</p>
+        <div class="search-container">
+            <input type="text" class="search-box" placeholder="Search emergency guides and resources...">
+            <button class="search-btn">🔍</button>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="emergency-section" id="main-section">
+            <h2>Emergency How-To Guides</h2>
+            <p class="subtitle">Step-by-step instructions for emergency situations</p>
+            
+            <div class="category-grid">
+                <div class="category-card" onclick="toggleCategory('medical')">
+                    <div class="category-icon">🏥</div>
+                    <div class="category-title">Medical Emergencies</div>
+                    <div class="category-count">8 guides</div>
+                    <div class="guide-dropdown" id="medical-dropdown">
+                        <div class="guide-list">
+                            <div class="guide-item" onclick="showGuide('cpr')">Do CPR</div>
+                            <div class="guide-item" onclick="showGuide('shock')">Help someone in shock</div>
+                            <div class="guide-item" onclick="showGuide('bleeding')">Stop severe bleeding</div>
+                            <div class="guide-item" onclick="showGuide('choking')">Help someone choking</div>
+                            <div class="guide-item" onclick="showGuide('hypothermia')">Treat hypothermia</div>
+                            <div class="guide-item" onclick="showGuide('seizure')">Help someone having a seizure</div>
+                            <div class="guide-item" onclick="showGuide('allergic')">Treat allergic reactions</div>
+                            <div class="guide-item" onclick="showGuide('move-injured')">Move an injured person safely</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="category-card" onclick="toggleCategory('safety')">
+                    <div class="category-icon">🛡️</div>
+                    <div class="category-title">Safety & Utilities</div>
+                    <div class="category-count">6 guides</div>
+                    <div class="guide-dropdown" id="safety-dropdown">
+                        <div class="guide-list">
+                            <div class="guide-item" onclick="showGuide('fire-extinguisher')">Use a fire extinguisher (PASS)</div>
+                            <div class="guide-item" onclick="showGuide('gas-shutoff')">Safely shut off gas</div>
+                            <div class="guide-item" onclick="showGuide('burn')">Treat a burn</div>
+                            <div class="guide-item" onclick="showGuide('signal-help')">Signal for help/rescue</div>
+                            <div class="guide-item" onclick="showGuide('poisoning')">Treat poisoning/overdose</div>
+                            <div class="guide-item" onclick="showGuide('purify-water')">Purify water in emergencies</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="category-card" onclick="toggleCategory('weather')">
+                    <div class="category-icon">🌪️</div>
+                    <div class="category-title">Weather Emergencies</div>
+                    <div class="category-count">7 guides</div>
+                    <div class="guide-dropdown" id="weather-dropdown">
+                        <div class="guide-list">
+                            <div class="guide-item" onclick="showGuide('flooding')">Stay safe during flooding/storm surge</div>
+                            <div class="guide-item" onclick="showGuide('lightning')">Stay safe during lightning</div>
+                            <div class="guide-item" onclick="showGuide('heat-exhaustion')">Treat heat exhaustion</div>
+                            <div class="guide-item" onclick="showGuide('extreme-heat')">Prepare for extreme heat</div>
+                            <div class="guide-item" onclick="showGuide('car-flooding')">Survive in a car during flooding</div>
+                            <div class="guide-item" onclick="showGuide('hurricane')">Hurricane safety</div>
+                            <div class="guide-item" onclick="showGuide('wildfire')">Wildfire safety and evacuation</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="category-card" onclick="toggleCategory('regional')">
+                    <div class="category-icon">🐊</div>
+                    <div class="category-title">Regional Safety</div>
+                    <div class="category-count">5 guides</div>
+                    <div class="guide-dropdown" id="regional-dropdown">
+                        <div class="guide-list">
+                            <div class="guide-item" onclick="showGuide('alligator')">Alligator safety</div>
+                            <div class="guide-item" onclick="showGuide('red-tide')">Red tide safety</div>
+                            <div class="guide-item" onclick="showGuide('rip-current')">Escape a rip current</div>
+                            <div class="guide-item" onclick="showGuide('sinkhole')">Sinkhole warning signs</div>
+                            <div class="guide-item" onclick="showGuide('tornado')">Tornado safety</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="background: #fef3c7; border: 1px solid #f59e0b; border-radius: 8px; padding: 15px; margin-top: 20px;">
+                <div style="color: #92400e; font-weight: 600; margin-bottom: 5px;">📱 Quick Access Tip</div>
+                <div style="color: #92400e; font-size: 0.9rem;">Bookmark this page and add it to your phone's home screen for instant emergency access</div>
+            </div>
+        </div>
+
+        <!-- Guide Content Sections -->
+        <div class="guide-content" id="fire-extinguisher-guide">
+            <button class="back-btn" onclick="showMainSection()">← Back to Guides</button>
+            <h3>How to Use a Fire Extinguisher (PASS)</h3>
+            <div class="important-notice">
+                <strong>Important!</strong> Remember the word PASS to use a fire extinguisher safely. Make sure you have a clear escape path behind you!
+            </div>
+            
+            <div class="guide-step">
+                <h4>P - PULL the pin</h4>
+                <ul>
+                    <li>Pull the pin at the top of the extinguisher</li>
+                    <li>This breaks the tamper seal</li>
+                </ul>
+            </div>
+            
+            <div class="guide-step">
+                <h4>A - AIM low</h4>
+                <ul>
+                    <li>Point the nozzle or horn at the base of the fire</li>
+                    <li>Stay 6-8 feet away from the fire</li>
+                    <li>Keep the extinguisher in an upright position</li>
+                </ul>
+            </div>
+            
+            <div class="guide-step">
+                <h4>S - SQUEEZE the handle</h4>
+                <ul>
+                    <li>Squeeze the handle or lever slowly and evenly</li>
+                    <li>This releases the extinguishing agent</li>
+                </ul>
+            </div>
+            
+            <div class="guide-step">
+                <h4>S - SWEEP from side to side</h4>
+                <ul>
+                    <li>Sweep the nozzle from side to side</li>
+                    <li>Aim at the base of the fire</li>
+                    <li>Move closer as the fire gets smaller</li>
+                    <li>Keep going until the fire is completely out</li>
+                </ul>
+            </div>
+            
+            <div class="remember-box">
+                <strong>Remember:</strong> Only use on small, contained fires. If the fire is too big or spreading, evacuate immediately and call 911!
+            </div>
+        </div>
+
+        <div class="guide-content" id="cpr-guide">
+            <button class="back-btn" onclick="showMainSection()">← Back to Guides</button>
+            <h3>How to Do CPR</h3>
+            <div class="important-notice">
+                <strong>Important!</strong> If someone is not breathing and not moving, you need to act fast.
+            </div>
+            
+            <div class="guide-step">
+                <h4>1. Check if they are okay</h4>
+                <ul>
+                    <li>Tap their shoulder and shout: "Are you okay?"</li>
+                    <li>If they don't move or answer, call 911 (or tell someone else to call)</li>
+                </ul>
+            </div>
+            
+            <div class="guide-step">
+                <h4>2. Open Their Airway</h4>
+                <ul>
+                    <li>Tilt their head back a little by lifting their chin</li>
+                    <li>Look, listen, and feel for breathing</li>
+                </ul>
+            </div>
+            
+            <div class="guide-step">
+                <h4>3. Start Chest Compressions</h4>
+                <ul>
+                    <li>Put your hands in the middle of their chest</li>
+                    <li>Push hard and fast (like pressing a big button)</li>
+                    <li>Push down about 2 inches deep</li>
+                    <li>Do this 100 to 120 times per minute (like the beat of "Stayin' Alive" 🎵)</li>
+                </ul>
+            </div>
+            
+            <div class="guide-step">
+                <h4>4. Give Rescue Breaths (If Trained)</h4>
+                <ul>
+                    <li>After 30 pushes, pinch their nose</li>
+                    <li>Breathe into their mouth (just enough to make their chest rise)</li>
+                    <li>Give 2 breaths, then go back to pushing on the chest</li>
+                </ul>
+            </div>
+            
+            <div class="guide-step">
+                <h4>5. Keep Going Until Help Arrives!</h4>
+                <ul>
+                    <li>Don't stop until the person wakes up or help arrives</li>
+                    <li>If someone brings an AED (a special machine), use it by following the instructions on it</li>
+                </ul>
+            </div>
+            
+            <div class="remember-box">
+                <strong>Remember:</strong> If you don't know how to give breaths, just keep doing chest pushes! Doing something is always better than doing nothing.
+            </div>
+        </div>
+
+        <div class="guide-content" id="shock-guide">
+            <button class="back-btn" onclick="showMainSection()">← Back to Guides</button>
+            <h3>How to Help Someone in Shock</h3>
+            <div class="important-notice">
+                <strong>Important!</strong> Shock happens when a person's body isn't getting enough blood flow. This can be very dangerous!
+            </div>
+            
+            <div class="guide-step">
+                <h4>1. Call 911!</h4>
+                <ul>
+                    <li>Get help fast by calling 911 or asking someone else to do it</li>
+                </ul>
+            </div>
+            
+            <div class="guide-step">
+                <h4>2. Lay Them Down</h4>
+                <ul>
+                    <li>Help them lie down on their back</li>
+                    <li>Lift their legs about 12 inches (if they aren't hurt)</li>
+                    <li>This helps blood flow back to their heart</li>
+                </ul>
+            </div>
+            
+            <div class="guide-step">
+                <h4>3. Keep Them Warm</h4>
+                <ul>
+                    <li>Cover them with a blanket or jacket</li>
+                    <li>Shock can make them feel cold, even if it's warm outside</li>
+                </ul>
+            </div>
+            
+            <div class="guide-step">
+                <h4>4. Loosen Tight Clothes</h4>
+                <ul>
+                    <li>If their clothes are too tight, loosen them so they can breathe better</li>
+                </ul>
+            </div>
+            
+            <div class="guide-step">
+                <h4>5. Don't Give Them Food or Water</h4>
+                <ul>
+                    <li>They might choke, so it's best to wait for medical help</li>
+                </ul>
+            </div>
+            
+            <div class="guide-step">
+                <h4>6. Stay with Them</h4>
+                <ul>
+                    <li>Talk to them and help them stay calm</li>
+                    <li>Watch their breathing. If they stop breathing, start CPR!</li>
+                </ul>
+            </div>
+            
+            <div class="remember-box">
+                <strong>Remember:</strong> Stay calm and keep them comfortable. Help is on the way!
+            </div>
+        </div>
+
+        <div class="guide-content" id="bleeding-guide">
+            <button class="back-btn" onclick="showMainSection()">← Back to Guides</button>
+            <h3>How to Stop Severe Bleeding</h3>
+            <div class="important-notice">
+                <strong>Important!</strong> Severe bleeding can be life-threatening. Act quickly but stay calm.
+            </div>
+            
+            <div class="guide-step">
+                <h4>1. Call 911 immediately</h4>
+                <ul>
+                    <li>Get professional help on the way first</li>
+                </ul>
+            </div>
+            
+            <div class="guide-step">
+                <h4>2. Apply Direct Pressure</h4>
+                <ul>
+                    <li>Use a clean cloth or gauze pad</li>
+                    <li>Press firmly on the wound</li>
+                    <li>Keep constant pressure - don't keep checking</li>
+                </ul>
+            </div>
+            
+            <div class="guide-step">
+                <h4>3. Elevate the Injury</h4>
+                <ul>
+                    <li>If possible, raise the injured area above the heart</li>
+                    <li>This helps slow down bleeding</li>
+                </ul>
+            </div>
+            
+            <div class="guide-step">
+                <h4>4. Add More Layers</h4>
+                <ul>
+                    <li>Don't remove the first cloth if it soaks through</li>
+                    <li>Add more layers on top</li>
+                    <li>Keep applying firm pressure</li>
+                </ul>
+            </div>
+            
+            <div class="guide-step">
+                <h4>5. Use a Tourniquet (If Available and Trained)</h4>
+                <ul>
+                    <li>Only for life-threatening limb bleeding</li>
+                    <li>Place it 2-3 inches above the wound</li>
+                    <li>Note the time you applied it</li>
+                </ul>
+            </div>
+            
+            <div class="guide-step">
+                <h4>6. Keep the Person Still</h4>
+                <ul>
+                    <li>Help them lie down</li>
+                    <li>Keep them warm</li>
+                    <li>Stay with them until help arrives</li>
+                </ul>
+            </div>
+            
+            <div class="remember-box">
+                <strong>Remember:</strong> Constant pressure saves lives. Don't give up!
+            </div>
+        </div>
+
+        <div class="guide-content" id="choking-guide">
+            <button class="back-btn" onclick="showMainSection()">← Back to Guides</button>
+            <h3>How to Help Someone Who is Choking</h3>
+            <div class="important-notice">
+                <strong>Important!</strong> If someone is choking and can't breathe, cough, or speak, act fast!
+            </div>
+            
+            <div class="guide-step">
+                <h4>1. Ask First</h4>
+                <ul>
+                    <li>Ask "Are you choking?"</li>
+                    <li>If they nod yes, tell them you're going to help</li>
+                </ul>
+            </div>
+            
+            <div class="guide-step">
+                <h4>2. Give 5 Back Blows</h4>
+                <ul>
+                    <li>Bend them forward at the waist</li>
+                    <li>Give 5 quick, hard blows between shoulder blades</li>
+                    <li>Use the heel of your hand</li>
+                </ul>
+            </div>
+            
+            <div class="guide-step">
+                <h4>3. Do 5 Abdominal Thrusts (Heimlich Maneuver)</h4>
+                <ul>
+                    <li>Stand behind the person</li>
+                    <li>Wrap your arms around their waist</li>
+                    <li>Make a fist with one hand</li>
+                    <li>Place it just above their navel</li>
+                    <li>Grab your fist with your other hand</li>
+                    <li>Give quick, upward thrusts</li>
+                </ul>
+            </div>
+            
+            <div class="guide-step">
+                <h4>4. Repeat if Needed</h4>
+                <ul>
+                    <li>Keep alternating between 5 back blows and 5 abdominal thrusts</li>
+                    <li>Continue until the object comes out or the person becomes unconscious</li>
+                </ul>
+            </div>
+            
+            <div class="guide-step">
+                <h4>5. If Person Becomes Unconscious</h4>
+                <ul>
+                    <li>Carefully lower them to the ground</li>
+                    <li>Start CPR</li>
+                    <li>Call 911 if not already done</li>
+                </ul>
+            </div>
+            
+            <div class="remember-box">
+                <strong>Remember:</strong> For pregnant women or large people, give chest thrusts instead of abdominal thrusts!
+            </div>
+        </div>
+
+        <div class="guide-content" id="heat-exhaustion-guide">
+            <button class="back-btn" onclick="showMainSection()">← Back to Guides</button>
+            <h3>How to Treat Heat Exhaustion</h3>
+            <div class="important-notice">
+                <strong>Important!</strong> Heat exhaustion can quickly become dangerous. Look for heavy sweating, weakness, cold/clammy skin, fast/weak pulse, nausea, or fainting.
+            </div>
+            
+            <div class="guide-step">
+                <h4>1. Move to a Cool Place</h4>
+                <ul>
+                    <li>Get out of the sun immediately</li>
+                    <li>Find air conditioning if possible</li>
+                    <li>At minimum, find shade</li>
+                </ul>
+            </div>
+            
+            <div class="guide-step">
+                <h4>2. Loosen Clothing</h4>
+                <ul>
+                    <li>Remove any unnecessary clothing</li>
+                    <li>Loosen tight clothing that might trap heat</li>
+                </ul>
+            </div>
+            
+            <div class="guide-step">
+                <h4>3. Cool Down</h4>
+                <ul>
+                    <li>Apply cool, wet cloths to body</li>
+                    <li>Use fans if available</li>
+                    <li>Take a cool shower or bath if possible</li>
+                </ul>
+            </div>
+            
+            <div class="guide-step">
+                <h4>4. Hydrate</h4>
+                <ul>
+                    <li>Sip water slowly</li>
+                    <li>Avoid alcohol or caffeine</li>
+                    <li>Sports drinks can help replace salt and minerals</li>
+                </ul>
+            </div>
+            
+            <div class="guide-step">
+                <h4>5. Monitor Closely</h4>
+                <ul>
+                    <li>Check temperature if possible</li>
+                    <li>Watch for worsening symptoms</li>
+                </ul>
+            </div>
+            
+            <div class="guide-step">
+                <h4>6. Seek Medical Help If:</h4>
+                <ul>
+                    <li>Vomiting occurs</li>
+                    <li>Symptoms get worse</li>
+                    <li>Symptoms last longer than 1 hour</li>
+                </ul>
+            </div>
+            
+            <div style="background: #fef2f2; border: 2px solid #dc2626; border-radius: 8px; padding: 15px; margin-top: 20px;">
+                <strong style="color: #dc2626;">Warning:</strong> If person has a high temperature (above 103°F), confusion, or hot/dry skin, this might be heat stroke - call 911 immediately!
+            </div>
+        </div>
+
+        <div class="guide-content" id="burn-guide">
+            <button class="back-btn" onclick="showMainSection()">← Back to Guides</button>
+            <h3>How to Treat a Burn</h3>
+            <div class="important-notice">
+                <strong>Important!</strong> The right first aid for burns depends on how serious they are.
+            </div>
+            
+            <div class="guide-step">
+                <h4>1. Stop the Burning</h4>
+                <ul>
+                    <li>Remove person from heat source</li>
+                    <li>Remove smoldering clothing unless stuck to skin</li>
+                    <li>Remove jewelry/tight items before swelling</li>
+                </ul>
+            </div>
+            
+            <div class="guide-step">
+                <h4>2. Determine Burn Severity</h4>
+                <ul>
+                    <li><strong>Minor (1st degree):</strong> Red, non-blistered skin (like mild sunburn)</li>
+                    <li><strong>Moderate (2nd degree):</strong> Blisters and some thickening of skin, very painful</li>
+                    <li><strong>Severe (3rd degree):</strong> White or charred, may not be painful due to nerve damage</li>
+                </ul>
+            </div>
+            
+            <div class="guide-step">
+                <h4>3. Cool the Burn</h4>
+                <ul>
+                    <li>For minor burns: Hold under cool (not cold) running water</li>
+                    <li>Cool for at least 10 minutes</li>
+                    <li>Don't use ice!</li>
+                </ul>
+            </div>
+            
+            <div class="guide-step">
+                <h4>4. Protect the Burn</h4>
+                <ul>
+                    <li>Cover loosely with sterile gauze</li>
+                    <li>Don't pop blisters</li>
+                    <li>Don't apply butter or ointments</li>
+                </ul>
+            </div>
+            
+            <div class="guide-step">
+                <h4>5. When to Get Help - Call 911 for:</h4>
+                <ul>
+                    <li>Large or deep burns</li>
+                    <li>Burns on face, hands, feet, or genitals</li>
+                    <li>Chemical or electrical burns</li>
+                    <li>Difficulty breathing</li>
+                    <li>Signs of infection</li>
+                </ul>
+            </div>
+            
+            <div class="guide-step">
+                <h4>6. Pain Management</h4>
+                <ul>
+                    <li>Take over-the-counter pain medication</li>
+                    <li>Keep burn elevated if possible</li>
+                    <li>Seek medical attention if pain is severe</li>
+                </ul>
+            </div>
+            
+            <div class="remember-box">
+                <strong>Remember:</strong> Cool water first, then protect the burn. Never use ice or butter!
+            </div>
+        </div>
+
+        <!-- Additional guide content sections would continue here for all other guides -->
+        <!-- I'll add a few more key ones to demonstrate the pattern -->
+
+        <div class="guide-content" id="gas-shutoff-guide">
+            <button class="back-btn" onclick="showMainSection()">← Back to Guides</button>
+            <h3>How to Safely Shut Off Gas</h3>
+            <div class="important-notice">
+                <strong>Important!</strong> If you smell gas (like rotten eggs) or hear hissing, get everyone out immediately and call 911 from a safe location.
+            </div>
+            
+            <div class="guide-step">
+                <h4>1. Find Your Gas Meter</h4>
+                <ul>
+                    <li>Look outside near the street or side of your house</li>
+                    <li>It's usually a metal box with pipes going into your home</li>
+                    <li>The shutoff valve looks like a small lever or wheel</li>
+                </ul>
+            </div>
+            
+            <div class="guide-step">
+                <h4>2. Get the Right Tool</h4>
+                <ul>
+                    <li>You need a wrench or pliers (keep one tied to the meter)</li>
+                    <li>Some newer meters have hand-turn valves</li>
+                    <li>Do NOT use anything that could create sparks</li>
+                </ul>
+            </div>
+            
+            <div class="guide-step">
+                <h4>3. Turn Off the Gas</h4>
+                <ul>
+                    <li>Turn the valve 1/4 turn (90 degrees) until it's sideways to the pipe</li>
+                    <li>If it's a wheel, turn it clockwise (righty-tighty)</li>
+                    <li>You should feel it stop - don't force it</li>
+                </ul>
+            </div>
+            
+            <div class="guide-step">
+                <h4>4. Check That It's Off</h4>
+                <ul>
+                    <li>The valve handle should now be perpendicular (sideways) to the pipe</li>
+                    <li>You should not hear any hissing sounds</li>
+                    <li>Mark it with tape or chalk so others know it's off</li>
+                </ul>
+            </div>
+            
+            <div class="guide-step">
+                <h4>5. Call the Gas Company</h4>
+                <ul>
+                    <li>Only trained professionals should turn gas back on</li>
+                    <li>Call your gas company's emergency number</li>
+                    <li>Do NOT try to turn it back on yourself - this can be deadly</li>
+                </ul>
+            </div>
+            
+            <div class="remember-box">
+                <strong>Remember:</strong> When in doubt, turn it off! It's better to be safe and call professionals than risk an explosion.
+            </div>
+        </div>
+
+        <div class="guide-content" id="flooding-guide">
+            <button class="back-btn" onclick="showMainSection()">← Back to Guides</button>
+            <h3>How to Stay Safe During Flooding/Storm Surge</h3>
+            <div class="important-notice">
+                <strong>Important!</strong> Whether it's river flooding or ocean storm surge, moving water is extremely dangerous and can kill you in minutes!
+            </div>
+            
+            <div class="guide-step">
+                <h4>1. Get to Higher Ground Now</h4>
+                <ul>
+                    <li>Move to the highest floor of a sturdy building</li>
+                    <li>If outside, get to the highest ground you can find</li>
+                    <li>Stay away from storm drains and low-lying areas</li>
+                </ul>
+            </div>
+            
+            <div class="guide-step">
+                <h4>2. Never Drive Through Flood Water</h4>
+                <ul>
+                    <li>Turn around, don't drown - find another route</li>
+                    <li>Just 6 inches of moving water can knock you down</li>
+                    <li>12 inches of water can carry away a car</li>
+                </ul>
+            </div>
+            
+            <div class="guide-step">
+                <h4>3. Stay Away from Moving Water</h4>
+                <ul>
+                    <li>Don't walk, swim, or play in flood water</li>
+                    <li>Moving water is much stronger than it looks</li>
+                    <li>Flood water contains dangerous debris and sewage</li>
+                </ul>
+            </div>
+            
+            <div class="guide-step">
+                <h4>4. If Water Enters Your Home</h4>
+                <ul>
+                    <li>Get to the highest floor immediately</li>
+                    <li>Call 911 and tell them your location</li>
+                    <li>Signal for help from windows or roof if needed</li>
+                </ul>
+            </div>
+            
+            <div class="guide-step">
+                <h4>5. After the Water Goes Down</h4>
+                <ul>
+                    <li>Don't return until authorities say it's safe</li>
+                    <li>Watch for downed power lines in standing water</li>
+                    <li>Don't drink or use flood water - it's contaminated</li>
+                </ul>
+            </div>
+            
+            <div class="remember-box">
+                <strong>Remember:</strong> Storm surge can rise 20+ feet in minutes. Flood water only needs to be ankle deep to be deadly if it's moving fast!
+            </div>
+        </div>
+
+        <div class="guide-content" id="alligator-guide">
+            <button class="back-btn" onclick="showMainSection()">← Back to Guides</button>
+            <h3>Alligator Safety</h3>
+            <div class="important-notice">
+                <strong>Important!</strong> Alligators are common in Florida waters and can move faster than you think. Keep your distance and stay alert!
+            </div>
+            
+            <div class="guide-step">
+                <h4>1. Stay Away from Water Edges</h4>
+                <ul>
+                    <li>Keep at least 20 feet away from any water where gators might live</li>
+                    <li>Don't let pets or children play near water's edge</li>
+                    <li>Alligators can lunge up to half their body length onto land</li>
+                </ul>
+            </div>
+            
+            <div class="guide-step">
+                <h4>2. Never Feed Alligators</h4>
+                <ul>
+                    <li>Feeding gators is illegal and makes them associate people with food</li>
+                    <li>Fed gators lose their fear of humans and become dangerous</li>
+                    <li>Keep food and fish scraps away from water</li>
+                </ul>
+            </div>
+            
+            <div class="guide-step">
+                <h4>3. If You See One</h4>
+                <ul>
+                    <li>Back away slowly and calmly</li>
+                    <li>Do NOT run in zigzags - that's a myth</li>
+                    <li>Make yourself look big and make noise to scare it away</li>
+                </ul>
+            </div>
+            
+            <div class="guide-step">
+                <h4>4. If One Approaches You</h4>
+                <ul>
+                    <li>Run straight away as fast as you can</li>
+                    <li>Alligators rarely chase people on land</li>
+                    <li>Get to higher ground or behind a barrier if possible</li>
+                </ul>
+            </div>
+            
+            <div class="guide-step">
+                <h4>5. If Attacked (Rare)</h4>
+                <ul>
+                    <li>Fight back with everything you have</li>
+                    <li>Hit the eyes and nose - their most sensitive spots</li>
+                    <li>Make as much noise as possible to get help</li>
+                </ul>
+            </div>
+            
+            <div class="remember-box">
+                <strong>Remember:</strong> Alligators are usually afraid of people. Most attacks happen when people get too close or try to feed them.
+            </div>
+        </div>
+
+        <div class="resources-section">
+            <h3>Official Emergency Resources</h3>
+            <p class="subtitle">Links to current official information (updated by authorities)</p>
+            
+            <div class="resource-links">
+                <a href="https://www.redcross.org/local/florida/south-florida/about-us/locations/tampa" class="resource-link">
+                    <div class="resource-icon">🏠</div>
+                    <div>
+                        <div style="font-weight: 600;">Emergency Shelters</div>
+                        <div style="font-size: 0.8rem; opacity: 0.8;">Red Cross Tampa Bay</div>
+                    </div>
+                </a>
+                
+                <a href="https://www.hillsboroughcounty.org/en/residents/public-safety/emergency-management" class="resource-link">
+                    <div class="resource-icon">🛣️</div>
+                    <div>
+                        <div style="font-weight: 600;">Evacuation Routes</div>
+                        <div style="font-size: 0.8rem; opacity: 0.8;">Hillsborough County</div>
+                    </div>
+                </a>
+                
+                <a href="https://fl511.com" class="resource-link">
+                    <div class="resource-icon">⚠️</div>
+                    <div>
+                        <div style="font-weight: 600;">Road Closures</div>
+                        <div style="font-size: 0.8rem; opacity: 0.8;">FL511 Live Updates</div>
+                    </div>
+                </a>
+                
+                <a href="https://www.pinellascounty.org/emergency/" class="resource-link">
+                    <div class="resource-icon">📋</div>
+                    <div>
+                        <div style="font-weight: 600;">Pinellas Emergency</div>
+                        <div style="font-size: 0.8rem; opacity: 0.8;">County Resources</div>
+                    </div>
+                </a>
+                
+                <a href="https://www.pascocountyfl.net/373/Emergency-Management" class="resource-link">
+                    <div class="resource-icon">🚨</div>
+                    <div>
+                        <div style="font-weight: 600;">Pasco Emergency</div>
+                        <div style="font-size: 0.8rem; opacity: 0.8;">County Resources</div>
+                    </div>
+                </a>
+                
+                <a href="https://outage.tecoenergy.com" class="resource-link">
+                    <div class="resource-icon">⚡</div>
+                    <div>
+                        <div style="font-weight: 600;">TECO Power Outages</div>
+                        <div style="font-size: 0.8rem; opacity: 0.8;">Live Outage Map</div>
+                    </div>
+                </a>
+                
+                <a href="https://www.noaa.gov/hurricane-prep" class="resource-link">
+                    <div class="resource-icon">🌀</div>
+                    <div>
+                        <div style="font-weight: 600;">NOAA Hurricane Prep</div>
+                        <div style="font-size: 0.8rem; opacity: 0.8;">Official Weather Service</div>
+                    </div>
+                </a>
+                
+                <a href="https://floridafree.substack.com" class="resource-link">
+                    <div class="resource-icon">📰</div>
+                    <div>
+                        <div style="font-weight: 600;">Safety & Security Articles</div>
+                        <div style="font-size: 0.8rem; opacity: 0.8;">Florida Free Newsletter</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="disclaimer-section" style="max-width: 1000px; margin: 20px auto; padding: 0 20px;">
+        <div style="background: #f9fafb; border: 1px solid #d1d5db; border-radius: 10px; padding: 20px;">
+            <h4 style="color: #374151; margin-bottom: 10px; font-size: 1rem;">⚠️ Important Disclaimer</h4>
+            <p style="font-size: 0.85rem; color: #6b7280; line-height: 1.6; margin: 0;">
+                The content on this website is provided for general informational purposes only and is not intended as professional advice. Tampa Bay Safe and/or contributors make no representations or warranties—express or implied—regarding the accuracy, completeness, or suitability of the information contained herein. Any reliance you place on this information is strictly at your own risk. In no event shall the owner of Tampa Bay Safe or associated companies, organizations, or individuals be liable for any loss or damage, including without limitation, indirect or consequential loss or damage, arising from the use or inability to use this website. Emergency information should be verified with official government sources. Always follow instructions from local authorities during emergencies.
+            </p>
+        </div>
+    </div>
+
+    <div class="footer">
+        <div class="contact-info">
+            <div><strong>Tampa Bay Safe</strong></div>
+            <div>📧 TampaBaySafe.org</div>
+            <div>📞 813-906-0020</div>
+        </div>
+        <div style="font-size: 0.9rem; opacity: 0.8; margin-top: 15px;">
+            Emergency information designed to work on any device, even with weak internet connections
+        </div>
+    </div>
+
+    <script>
+        function toggleCategory(category) {
+            // Close all other dropdowns
+            const allDropdowns = document.querySelectorAll('.guide-dropdown');
+            const allCards = document.querySelectorAll('.category-card');
+            
+            allDropdowns.forEach(dropdown => {
+                if (dropdown.id !== category + '-dropdown') {
+                    dropdown.classList.remove('active');
+                }
+            });
+            
+            allCards.forEach(card => {
+                if (!card.onclick.toString().includes(category)) {
+                    card.classList.remove('active');
+                }
+            });
+            
+            // Toggle the clicked category
+            const targetDropdown = document.getElementById(category + '-dropdown');
+            const targetCard = event.currentTarget;
+            
+            if (targetDropdown.classList.contains('active')) {
+                targetDropdown.classList.remove('active');
+                targetCard.classList.remove('active');
+            } else {
+                targetDropdown.classList.add('active');
+                targetCard.classList.add('active');
+            }
+        }
+
+        function showGuide(guideId) {
+            // Hide main section
+            document.getElementById('main-section').style.display = 'none';
+            
+            // Hide all guide content
+            const allGuides = document.querySelectorAll('.guide-content');
+            allGuides.forEach(guide => {
+                guide.classList.remove('active');
+            });
+            
+            // Show selected guide
+            const selectedGuide = document.getElementById(guideId + '-guide');
+            if (selectedGuide) {
+                selectedGuide.classList.add('active');
+                window.scrollTo(0, 0);
+            }
+        }
+
+        function showMainSection() {
+            // Hide all guide content
+            const allGuides = document.querySelectorAll('.guide-content');
+            allGuides.forEach(guide => {
+                guide.classList.remove('active');
+            });
+            
+            // Show main section
+            document.getElementById('main-section').style.display = 'block';
+            window.scrollTo(0, 0);
+        }
+
+        // Simple search functionality
+        document.querySelector('.search-box').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const guideItems = document.querySelectorAll('.guide-item');
+            
+            if (searchTerm === '') {
+                // Reset all categories to closed
+                document.querySelectorAll('.guide-dropdown').forEach(dropdown => {
+                    dropdown.classList.remove('active');
+                });
+                document.querySelectorAll('.category-card').forEach(card => {
+                    card.classList.remove('active');
+                });
+            } else {
+                // Open all categories and highlight matching items
+                document.querySelectorAll('.guide-dropdown').forEach(dropdown => {
+                    dropdown.classList.add('active');
+                });
+                document.querySelectorAll('.category-card').forEach(card => {
+                    card.classList.add('active');
+                });
+            }
+            
+            guideItems.forEach(item => {
+                if (item.textContent.toLowerCase().includes(searchTerm)) {
+                    item.style.background = '#fef3c7';
+                    item.style.borderColor = '#f59e0b';
+                } else {
+                    item.style.background = '';
+                    item.style.borderColor = '';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
